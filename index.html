@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="直观看懂20毫米每分钟的踏板速度，探索不同初速下的刹停条件估算，并查看资料来源。"><title>20 mm/min，刹车有多慢？</title><style>html,body{overflow-x:clip;margin:0;background:var(--color-ground);color:var(--color-ink)}body{font-family:var(--font-body)}</style></head><body>
+<div id="brake-demo-2010">
+<style>
+/* Hallmark · genre: modern-minimal · macrostructure: Workbench · theme: custom · enrichment: functional diagram · nav: tabs · footer: inline */
+:root {
+ --color-ground: oklch(97% .006 255); --color-paper: oklch(100% 0 0);
+ --color-paper-2: oklch(98% .008 255); --color-ink: oklch(25% .025 255);
+ --color-ink-2: oklch(42% .025 255); --color-muted: oklch(48% .02 255);
+ --color-rule: oklch(88% .012 255); --color-accent: oklch(48% .2 260);
+ --color-accent-ink: oklch(100% 0 0); --color-accent-soft: oklch(95% .025 260);
+ --color-focus: oklch(8% .005 255); --color-comparison: oklch(47% .024 255);
+ --font-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+ --font-display: var(--font-body); --font-mono: "SFMono-Regular", Consolas, monospace;
+ --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px;
+ --space-lg: 24px; --space-xl: 32px; --space-2xl: 48px; --space-3xl: 64px;
+ --text-xs: 12px; --text-sm: 13px; --text-md: 15px; --text-lg: 18px; --text-xl: 24px;
+ --radius-button: 8px; --radius-panel: 16px; --rule-width: 1px;
+ --dur-micro: 120ms; --ease-out: cubic-bezier(.16,1,.3,1);
+ --background: var(--color-paper); --foreground: var(--color-ink);
+ --muted-foreground: var(--color-muted); --border: var(--color-rule);
+ --muted: var(--color-rule); --viz-series-1: var(--color-accent);
+ --viz-series-2: var(--color-comparison); --accent: var(--color-accent-soft);
+ --accent-foreground: var(--color-ink);
+}
+
+/* Hallmark · modern-minimal · Workbench · calm light canvas, blue signal, large functional diagram */
+#brake-demo-2010 {max-width:1120px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) var(--space-xl);color:var(--color-ink);font:400 var(--text-md)/1.75 var(--font-body);color-scheme:light}
+#brake-demo-2010 *,#brake-demo-2010 *::before,#brake-demo-2010 *::after{box-sizing:border-box}
+#brake-demo-2010 [hidden]{display:none!important}
+#brake-demo-2010 h1,#brake-demo-2010 h2,#brake-demo-2010 h3,#brake-demo-2010 p{margin:0}
+#brake-demo-2010 h1 {overflow-wrap:anywhere;min-width:0;font:600 clamp(32px,4.4vw,52px)/1.24 var(--font-display);letter-spacing:-.035em}
+#brake-demo-2010 h2 {font:600 var(--text-xl)/1.45 var(--font-display);letter-spacing:-.025em}
+#brake-demo-2010 h3 {font:600 20px/1.5 var(--font-display);margin-bottom:var(--space-md)}
+#brake-demo-2010 .bd-eyebrow {color:var(--color-muted);font-size:var(--text-sm);letter-spacing:.04em;margin-bottom:var(--space-sm)}
+#brake-demo-2010 .bd-hero{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:var(--space-2xl);align-items:center;margin-bottom:var(--space-xl)}
+#brake-demo-2010 .bd-subtitle{margin-top:var(--space-md);color:var(--color-ink-2);font-size:var(--text-md)}
+#brake-demo-2010 .bd-speed-fact{border-left:var(--rule-width) solid var(--color-rule);padding-left:var(--space-xl);color:var(--color-ink-2)}
+#brake-demo-2010 .bd-fact-number{font:600 56px/1.1 var(--font-display);letter-spacing:-.05em;color:var(--color-accent);font-variant-numeric:tabular-nums}
+#brake-demo-2010 .bd-fact-number span{font-size:var(--text-lg);margin-left:var(--space-sm);color:var(--color-ink)}
+#brake-demo-2010 .bd-fact-rule{width:40px;height:var(--rule-width);background:var(--color-rule);margin:var(--space-md) 0}
+#brake-demo-2010 .bd-tabs{display:flex;gap:var(--space-2xs);border-bottom:var(--rule-width) solid var(--color-rule);margin-bottom:var(--space-lg)}
+#brake-demo-2010 button,#brake-demo-2010 select{font:500 var(--text-md)/1.5 var(--font-body);color:inherit}
+#brake-demo-2010 button{cursor:pointer;min-height:44px;border:var(--rule-width) solid var(--color-rule);background:var(--color-paper);color:var(--color-ink);border-radius:var(--radius-button);padding:10px var(--space-md);text-align:center}
+#brake-demo-2010 .bd-tabs button{border:0;border-bottom:3px solid transparent;border-radius:0;background:transparent;min-height:56px;padding:var(--space-sm) var(--space-lg);color:var(--color-ink-2)}
+#brake-demo-2010 .bd-tabs button[aria-selected=true]{color:var(--color-accent);border-bottom-color:var(--color-accent);font-weight:600}
+#brake-demo-2010 :is(button,a,input,select,summary):focus-visible{outline:3px solid var(--color-focus);outline-offset:3px}
+#brake-demo-2010 button:active{transform:translateY(1px)}
+#brake-demo-2010 button[aria-pressed=true]{border-color:var(--color-accent);background:var(--color-accent-soft);color:var(--color-accent);font-weight:600}
+#brake-demo-2010 button[aria-pressed=true]::before{content:'✓';margin-right:6px}
+#brake-demo-2010 .bd-choice[aria-pressed=true]::before{position:absolute;right:10px;top:10px;margin:0}
+#brake-demo-2010 .bd-workspace{background:var(--color-paper);color:var(--color-ink);border:var(--rule-width) solid var(--color-rule);border-radius:var(--radius-panel);padding:var(--space-xl)}
+#brake-demo-2010 .bd-section{margin-top:var(--space-lg)}
+#brake-demo-2010 #bd-stroke-field,#brake-demo-2010 #bd-brake-controls{margin-top:0}
+#brake-demo-2010 .bd-controls{display:flex;flex-wrap:wrap;gap:var(--space-md);align-items:end}
+#brake-demo-2010 .bd-field{flex:1 1 180px;min-width:0}
+#brake-demo-2010 .form-label{display:block;margin-bottom:var(--space-sm);font-weight:500;color:var(--color-ink-2);font-size:var(--text-sm)}
+#brake-demo-2010 .bd-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:var(--space-xs)}
+#brake-demo-2010 #bd-model-choices{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:var(--space-md)}
+#brake-demo-2010 #bd-speed-choices{display:flex;flex-wrap:wrap;gap:var(--space-xs)}
+#brake-demo-2010 .bd-choice{position:relative;text-align:left;padding:var(--space-sm) var(--space-md);font-size:var(--text-sm);font-weight:500;min-width:0}
+#brake-demo-2010 .bd-choice span{display:block;padding-right:var(--space-sm)}
+#brake-demo-2010 .bd-choice small{display:block;margin-top:var(--space-2xs);font-size:var(--text-xs);color:var(--color-muted);font-weight:400}
+#brake-demo-2010 #bd-speed-choices .bd-choice{min-width:90px;text-align:center}
+#brake-demo-2010 #bd-speed-choices .bd-choice[aria-pressed=true]::before{position:static}
+#brake-demo-2010 #bd-speed-choices .bd-choice span{display:inline;padding:0}
+#brake-demo-2010 .bd-source-line{font-size:var(--text-xs);color:var(--color-ink-2);margin-top:var(--space-sm);line-height:1.7}
+#brake-demo-2010 a{color:var(--color-accent);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;overflow-wrap:anywhere}
+#brake-demo-2010 .bd-stage-heading{display:flex;justify-content:space-between;align-items:center;gap:var(--space-lg);border-top:var(--rule-width) solid var(--color-rule);padding-top:var(--space-lg);margin-top:var(--space-lg)}
+#brake-demo-2010 .bd-stage-heading h2{font-size:20px}
+#brake-demo-2010 .bd-stage-heading .bd-eyebrow{margin-bottom:var(--space-2xs)}
+#brake-demo-2010 .bd-total{flex-shrink:0;text-align:right}
+#brake-demo-2010 .bd-total span{display:block;color:var(--color-muted);font-size:var(--text-xs)}
+#brake-demo-2010 .bd-total strong{font:600 28px/1.6 var(--font-display);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+#brake-demo-2010 .bd-total small{font-size:var(--text-md);font-weight:400}
+#brake-demo-2010 .bd-stage{display:grid;grid-template-columns:220px minmax(0,1fr);column-gap:var(--space-lg);align-items:center;padding:var(--space-lg) 0 var(--space-sm)}
+#brake-demo-2010 .bd-readouts{display:grid;gap:var(--space-lg);align-content:center}
+#brake-demo-2010 .bd-value{font:600 clamp(22px,2.6vw,30px)/1.6 var(--font-display);font-variant-numeric:tabular-nums;letter-spacing:-.035em;white-space:nowrap}
+#brake-demo-2010 .bd-readouts>div+div{border-top:var(--rule-width) solid var(--color-rule);padding-top:var(--space-md)}
+#brake-demo-2010 .bd-figure{display:block;width:100%;height:auto;min-height:280px}
+#brake-demo-2010 .bd-figure text,#brake-demo-2010 .bd-force-svg text{fill:var(--color-ink);font:400 13px var(--font-body)}
+#brake-demo-2010 .bd-figure .bd-diagram-caption{fill:var(--color-muted);font-size:12px}
+#brake-demo-2010 .bd-force-svg{display:block;width:100%;height:330px;margin:var(--space-lg) 0}
+#brake-demo-2010 .bd-reduced-motion #bd-pedal{transform:none}
+#brake-demo-2010 #bd-road-area{grid-column:1/-1;padding-top:var(--space-md);border-top:var(--rule-width) solid var(--color-rule);margin-top:var(--space-sm)}
+#brake-demo-2010 .bd-road{position:relative;height:84px;margin:0 var(--space-sm)}
+#brake-demo-2010 .bd-road-line{position:absolute;top:42px;width:100%;border-bottom:2px dashed var(--color-rule)}
+#brake-demo-2010 .bd-car{position:absolute;top:0;left:0;color:var(--color-accent);will-change:transform}
+#brake-demo-2010 .bd-road-start{position:absolute;left:0;top:55px}
+#brake-demo-2010 .bd-road-end{position:absolute;right:0;top:55px;text-align:right}
+#brake-demo-2010 #bd-distance{margin:0 var(--space-sm);color:var(--color-ink-2);font-size:var(--text-xs)}
+#brake-demo-2010 .bd-player{border-top:var(--rule-width) solid var(--color-rule);padding-top:var(--space-lg)}
+#brake-demo-2010 .viz-controls{display:flex;align-items:center;flex-wrap:wrap;gap:var(--space-xs);margin-top:0}
+#brake-demo-2010 .btn-primary{background:var(--color-accent);color:var(--color-accent-ink);border-color:var(--color-accent);min-width:116px}
+#brake-demo-2010 #bd-status{margin-left:var(--space-xs);color:var(--color-muted)}
+#brake-demo-2010 .bd-rate-picker{margin-left:auto;display:flex;align-items:center;gap:var(--space-sm)}
+#brake-demo-2010 .bd-segments{display:flex;gap:var(--space-2xs)}
+#brake-demo-2010 .bd-segments button{font-size:var(--text-sm);padding:var(--space-xs) var(--space-sm)}
+#brake-demo-2010 #bd-duration{float:right;color:var(--color-muted);font-weight:400}
+#brake-demo-2010 .form-range{display:block;width:100%;min-width:0;height:36px;margin:0;accent-color:var(--color-accent);cursor:ew-resize}
+#brake-demo-2010 .bd-milestones{display:flex;justify-content:space-between;gap:var(--space-xs);font-size:var(--text-xs);color:var(--color-muted);margin-top:var(--space-xs)}
+#brake-demo-2010 .bd-milestones span{display:grid;gap:2px;text-align:center}
+#brake-demo-2010 .bd-milestones b{color:var(--color-ink-2);font-weight:500}
+#brake-demo-2010 .bd-assumption-note{border-left:3px solid var(--color-rule);padding-left:var(--space-md);font-size:var(--text-sm);color:var(--color-ink-2)}
+#brake-demo-2010 .text-small{font-size:var(--text-sm)}
+#brake-demo-2010 .text-muted{color:var(--color-muted)}
+#brake-demo-2010 .text-end{text-align:right}
+#brake-demo-2010 .tabular-nums{font-variant-numeric:tabular-nums}
+#brake-demo-2010 .bd-text{margin:var(--space-md) 0}
+#brake-demo-2010 .bd-links{display:flex;gap:var(--space-sm) var(--space-lg);flex-wrap:wrap}
+#brake-demo-2010 .bd-prose{margin-top:0;max-width:100%}
+#brake-demo-2010 .bd-table-scroll{max-width:100%;overflow-x:auto;margin:var(--space-md) 0}
+#brake-demo-2010 table{width:100%;border-collapse:collapse;font-size:var(--text-sm);line-height:1.7}
+#brake-demo-2010 th{font-weight:500;color:var(--color-muted);text-align:left}
+#brake-demo-2010 td,#brake-demo-2010 th{padding:var(--space-sm);border-bottom:var(--rule-width) solid var(--color-rule);vertical-align:top;overflow-wrap:anywhere}
+#brake-demo-2010 td:first-child,#brake-demo-2010 th:first-child{padding-left:0}
+#brake-demo-2010 td:last-child,#brake-demo-2010 th:last-child{padding-right:0}
+#brake-demo-2010 tr[aria-current=true]{background:var(--color-accent-soft);color:var(--color-ink);font-weight:500}
+#brake-demo-2010 tr[aria-current=true] td:first-child{border-left:3px solid var(--color-accent);padding-left:var(--space-sm)}
+#brake-demo-2010 details{margin-top:var(--space-md)}
+#brake-demo-2010 summary{cursor:pointer;min-height:44px;padding:var(--space-sm) 0;font-size:var(--text-sm);font-weight:500}
+#brake-demo-2010 details p{margin:var(--space-sm) 0;font-size:var(--text-sm);color:var(--color-ink-2)}
+#brake-demo-2010 .bd-assumptions{margin-top:var(--space-xs)}
+#brake-demo-2010 .bd-assumptions summary span{font-weight:400;color:var(--color-muted);margin-left:var(--space-xs)}
+#brake-demo-2010 .form-select{display:block;width:100%;height:44px;max-width:100%;border:var(--rule-width) solid var(--color-rule);border-radius:var(--radius-button);background:var(--color-paper);color:var(--color-ink);padding:var(--space-xs) var(--space-sm);font-size:var(--text-sm)}
+#brake-demo-2010 .bd-library{margin-top:var(--space-xl)}
+#brake-demo-2010 .bd-library-heading{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-md);padding-bottom:var(--space-md);border-bottom:var(--rule-width) solid var(--color-rule)}
+#brake-demo-2010 .bd-library-heading h2{font-size:var(--text-lg)}
+#brake-demo-2010 .bd-library-heading span{color:var(--color-muted)}
+#brake-demo-2010 .bd-library>details{border-bottom:var(--rule-width) solid var(--color-rule);margin:0;padding:var(--space-xs) 0}
+#brake-demo-2010 .bd-footer{margin-top:var(--space-xl);color:var(--color-muted);font-size:var(--text-xs)}
+@media(hover:hover){#brake-demo-2010 button:hover{background:var(--color-paper-2);color:var(--color-ink)}#brake-demo-2010 .btn-primary:hover{background:var(--color-accent);color:var(--color-accent-ink);opacity:.92}#brake-demo-2010 button[aria-pressed=true]:hover{background:var(--color-accent-soft);color:var(--color-accent)}}
+@media(max-width:850px){#brake-demo-2010{padding:var(--space-xl) var(--space-lg)}#brake-demo-2010 .bd-workspace{padding:var(--space-lg)}#brake-demo-2010 .bd-stage{grid-template-columns:180px minmax(0,1fr)}#brake-demo-2010 .bd-rate-picker{width:100%;margin-left:0;margin-top:var(--space-xs)}#brake-demo-2010 #bd-model-choices{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#brake-demo-2010{padding:var(--space-lg) var(--space-md)}#brake-demo-2010 .bd-hero{grid-template-columns:1fr;gap:var(--space-lg);margin-bottom:var(--space-lg)}#brake-demo-2010 .bd-speed-fact{display:flex;align-items:center;gap:var(--space-md);border-left:0;border-top:var(--rule-width) solid var(--color-rule);padding:var(--space-md) 0 0;flex-wrap:wrap}#brake-demo-2010 .bd-fact-number{font-size:38px}#brake-demo-2010 .bd-fact-number span{font-size:var(--text-md)}#brake-demo-2010 .bd-fact-rule{display:none}#brake-demo-2010 .bd-speed-fact>p:last-child{flex-basis:100%}#brake-demo-2010 .bd-speed-fact>p:last-child br{display:none}#brake-demo-2010 .bd-tabs{gap:0}#brake-demo-2010 .bd-tabs button{flex:1;min-width:0;min-height:48px;padding:var(--space-xs) 0;font-size:var(--text-sm)}#brake-demo-2010 .bd-workspace{padding:var(--space-md);border-radius:12px}#brake-demo-2010 .bd-choices{grid-template-columns:repeat(2,minmax(0,1fr))}#brake-demo-2010 .bd-stage-heading{align-items:start;flex-direction:column;gap:var(--space-sm)}#brake-demo-2010 .bd-total{text-align:left}#brake-demo-2010 .bd-total strong{font-size:26px}#brake-demo-2010 .bd-stage{grid-template-columns:1fr;padding-top:var(--space-md)}#brake-demo-2010 .bd-readouts{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-xs)}#brake-demo-2010 .bd-readouts>div+div{border-top:0;border-left:var(--rule-width) solid var(--color-rule);padding:0 0 0 var(--space-xs)}#brake-demo-2010 .bd-readouts .text-small{font-size:var(--text-xs)}#brake-demo-2010 .bd-value{font-size:14px}#brake-demo-2010 .bd-figure{min-height:300px;margin-top:var(--space-md)}#brake-demo-2010 .bd-rate-picker{flex-wrap:wrap;gap:var(--space-xs)}#brake-demo-2010 .bd-segments button{padding:var(--space-xs) 10px}#brake-demo-2010 #bd-status{font-size:var(--text-xs)}#brake-demo-2010 .bd-road-start,#brake-demo-2010 .bd-road-end{font-size:var(--text-xs)}#brake-demo-2010 .bd-library-heading{display:block}#brake-demo-2010 .bd-library-heading span{display:block;margin-top:var(--space-xs)}#brake-demo-2010 table{min-width:400px}#brake-demo-2010 #bd-results,#brake-demo-2010 #bd-car-comparison{font-size:var(--text-xs)}#brake-demo-2010 .bd-assumptions summary span{display:block;margin-left:var(--space-md)}#brake-demo-2010 h2{font-size:20px}}
+@media(prefers-reduced-motion:reduce){#brake-demo-2010 button:active{transform:none}#brake-demo-2010 .bd-car{transform:none!important}}
+
+#brake-demo-2010 button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+#brake-demo-2010 .bd-tabs button,#brake-demo-2010 .btn,#brake-demo-2010 .bd-segments button{white-space:nowrap}
+#brake-demo-2010 .bd-stage>*{min-width:0}
+
+</style>
+<header class="bd-hero">
+<div><p class="bd-eyebrow">刹车踏板 · 交互演示</p><h1>20 mm/min，<br>刹车有多慢？</h1><p class="bd-subtitle">从踏板行程到刹停时间与距离的交互演示</p></div>
+<div class="bd-speed-fact"><div class="bd-fact-number">3<span>秒</span></div><p>踏板才前进 <strong>1 mm</strong></p><div class="bd-fact-rule"></div><p class="text-small">100 mm 假设行程<br>需要 <strong>5 分钟</strong> 才能踩到底</p></div>
+</header>
+<nav class="bd-tabs" role="tablist" aria-label="查看内容">
+<button id="bd-tab-pedal" type="button" role="tab" data-choice="mode" data-value="pedal" aria-controls="bd-motion" aria-selected="true">踏板行程</button>
+<button id="bd-tab-brake" type="button" role="tab" data-choice="mode" data-value="brake" aria-controls="bd-motion" aria-selected="false" tabindex="-1">刹停距离</button>
+<button id="bd-tab-force" type="button" role="tab" data-choice="mode" data-value="force" aria-controls="bd-force" aria-selected="false" tabindex="-1">受力对比</button>
+<button id="bd-tab-report" type="button" role="tab" data-choice="mode" data-value="report" aria-controls="bd-report" aria-selected="false" tabindex="-1">测试步骤</button>
+</nav>
+<select id="bd-mode" hidden aria-hidden="true"><option value="pedal">踏板行程</option><option value="brake">刹停距离</option><option value="force">受力对比</option><option value="report">测试步骤</option></select>
+<div class="bd-workspace">
+<section id="bd-report" class="bd-section bd-prose" role="tabpanel" aria-labelledby="bd-tab-report" hidden>
+<h3>台架试验是怎么做的？</h3>
+<p class="bd-text">图中标准条文：安装固定样件，在踏板表面几何中心预施加10–20 N纵向力确定测量零点；再施加规定载荷，保持5秒后解除，共做5次，最后测永久变形并检查裂纹或损坏。</p>
+<div class="bd-table-scroll"><table class="table table-sm bd-data"><thead><tr><th>图片中的项目</th><th>核对后的含义</th></tr></thead><tbody>
+<tr><td>1500 N · 4 件</td><td>卸载后的永久变形：2.04、4.07、2.05、2.28 mm；平均 <span class="tabular-nums">2.61 mm</span>。图片记录未出现裂纹或损坏。这个数不是正常踩踏行程。</td></tr>
+<tr><td>20 mm/min</td><td>台架加载位移速度，等于每 3 s 移动 1 mm。没有完整力—位移曲线，无法算出达到 3000 N 所需时间。</td></tr>
+<tr><td>加严检验 · 14 件</td><td>表内载荷为 2000–3000 N。只有 01017、01018 两件标为 3000 N；不能写成“14 件全部通过 3000 N”。</td></tr>
+<tr><td>保持 5 s · 共 5 次</td><td>图片写明的加载条件；3000 N 项目仅展示试验后的目视检查结果，没有公布永久变形数值或快速冲击结果。</td></tr>
+</tbody></table></div>
+<p class="bd-text">加严项目明确写出20 mm/min的加载速度。与之对照，懂车帝10月8日发布的测试是驾驶员在实车上进行100 km/h→0的紧急制动；报道没有可核对的具体踩踏速度，本页不虚构速度倍数。</p>
+<div class="text-small">图片是用户提供的检测摘要；未获得完整签章报告、原始测量曲线或检测机构名称。标准条文截图与1500 N判据来自该图片；官方平台另确认 QC/T 788-2018 为现行推荐性行业标准。</div>
+<div class="bd-links bd-section"><a href="https://std.samr.gov.cn/hb/search/stdHBDetailed?id=8B1827F26987BB19E05397BE0A0AB44A" target="_blank" rel="noopener noreferrer">国家标准平台 · 标准信息</a><a href="https://www.mrjjxw.com/articles/2026-10-09/4600399.html" target="_blank" rel="noopener noreferrer">每经报道 · 事件背景</a></div>
+<details><summary class="cursor-interaction">逐项核对 14 个样件的载荷</summary><div class="bd-table-scroll"><table class="table table-sm tabular-nums"><thead><tr><th>载荷</th><th>件数</th><th>样品编号</th></tr></thead><tbody id="bd-report-loads"></tbody></table></div><div class="text-small">原图各行均记载试验后目视检查未出现裂纹和损坏。分组只按表内载荷归纳，不补推每件的完整加载历程。</div></details>
+</section>
+<section id="bd-force" class="bd-section bd-prose" role="tabpanel" aria-labelledby="bd-tab-force" hidden>
+<h3>峰值相同，不代表受力过程相同</h3>
+<div class="text-small">比较前提：同一踏板、同一施力点、同一方向、同一安装方式；接触外力峰值均确实为 3000 N。</div>
+<svg class="bd-force-svg" role="img" aria-label="慢加载逐渐升到3000牛，猛踩以短时脉冲达到同样峰值。曲线仅示意形状，时间轴未定标，不是实测波形。"></svg>
+<div class="bd-table-scroll"><table class="table table-sm"><thead><tr><th>看什么</th><th>慢加载</th><th>猛踩</th></tr></thead><tbody>
+<tr><td>峰值外力</td><td>3000 N</td><td>3000 N；不额外叠加虚构峰值</td></tr>
+<tr><td>结构响应</td><td>通常接近准静态平衡</td><td>需考虑惯性、阻尼、振动及限位接触；局部应力或支架反力可能不同</td></tr>
+<tr><td>材料响应</td><td>较低加载速率下的表现</td><td>材料可能受应变速率影响；方向和程度需测量，不能一概认定更容易断</td></tr>
+<tr><td>损伤判定</td><td>本图记录永久变形或目视检查</td><td>需高速力—时间、位移/应变及断口数据，不能从慢加载直接推出</td></tr>
+</tbody></table></div>
+<p class="bd-text">若“3000 N”只是最终稳态读数，而没有测到快速加载时的瞬时峰值，两次试验是否同为3000 N仍未确定。仅凭峰值也不能比较输入能量或损伤大小。</p>
+<p class="bd-text">图中台架检验是加载机缓慢施力、保持后卸载；懂车帝报道的工况是驾驶员在行驶车辆上快速进行紧急制动。速度、载荷历程和安装状态分别标注，不把两个动作画成同一种过程。</p>
+<div class="bd-links text-small"><a href="https://www.simscale.com/knowledge-base/when-do-i-need-a-dynamic-analysis/" target="_blank" rel="noopener noreferrer">SimScale · 静态与动态响应</a><a href="https://ansyshelp.ansys.com/public/views/secured/corp/v251/en/ans_str/Hlp_G_STR5.html" target="_blank" rel="noopener noreferrer">Ansys · 瞬态结构分析</a><a href="https://instron.com/en/testing-solutions/other-standards/high-strain-rate-testing/" target="_blank" rel="noopener noreferrer">Instron · 材料速率试验</a><a href="https://saemobilus.sae.org/papers/device-applying-brake-pedal-a-controlled-rate-impact-brake-testing-720448" target="_blank" rel="noopener noreferrer">SAE · 踏板冲击试验论文摘要</a></div>
+</section>
+<section id="bd-motion" role="tabpanel" aria-labelledby="bd-tab-pedal">
+<div id="bd-stroke-field" class="bd-controls bd-section"><div class="bd-field"><span class="form-label" id="bd-stroke-label">选择资料中的踏板全行程</span><div id="bd-stroke-choices" class="bd-choices" role="group" aria-labelledby="bd-stroke-label"></div><select id="bd-stroke" hidden aria-hidden="true"><option value="108">起亚 Rio YB · 108 mm</option><option value="130.4">起亚 K5 2021手册 · 130.4 mm</option><option value="135.3">日产 Altima 2013手册 · 135.3 mm</option><option value="136">起亚 Niro DE HEV手册 · 136 mm</option><option value="100">100 mm · 自定义演示假设</option></select></div></div>
+<div id="bd-stroke-source" class="text-small bd-section bd-source-line"></div>
+<div id="bd-brake-controls" class="bd-section">
+<div class="bd-field"><span class="form-label" id="bd-model-label">参考车型 · 各车资料分列</span><div id="bd-model-choices" class="bd-choices" role="group" aria-labelledby="bd-model-label"></div><select id="bd-model" hidden aria-hidden="true"></select></div>
+<div class="bd-field"><span class="form-label" id="bd-speed-label">初始车速</span><div id="bd-speed-choices" class="bd-choices" role="group" aria-labelledby="bd-speed-label"></div><select id="bd-speed" hidden aria-hidden="true"><option value="30">30 km/h</option><option value="50">50 km/h</option><option value="80">80 km/h</option><option value="100" selected>100 km/h</option><option value="120">120 km/h</option></select></div>
+<details class="bd-assumptions"><summary>计算假设 <span class="text-small">空行程与制动力建立方式</span></summary><div class="bd-controls"><div class="bd-field"><label class="form-label" for="bd-free">制动前空行程 · 假设</label><select id="bd-free" class="form-select"><option value="0">0 mm</option><option value="3">3 mm</option><option value="5" selected>5 mm</option><option value="8">8 mm</option></select></div>
+<div class="bd-field"><label class="form-label" for="bd-ramp">减速度随行程增强 · 假设</label><select id="bd-ramp" class="form-select"><option value="full">在整个有效行程内线性增强</option><option value="50">原模型 · 50 mm内建立制动力</option><option value="30">30 mm内建立制动力</option><option value="10">10 mm内建立制动力</option></select></div>
+</div></details></div>
+<div id="bd-selected-source" class="text-small bd-section bd-source-line"></div>
+<div class="bd-stage-heading"><div><p id="bd-stage-kicker" class="bd-eyebrow">20 mm/min · 行程演示</p><h2 id="bd-heading"></h2></div><div id="bd-total" class="bd-total"></div></div>
+<div class="bd-stage">
+<div class="bd-readouts tabular-nums"><div><div class="text-small text-muted">已经踩了多久</div><div id="bd-time" class="bd-value">0分00秒</div></div><div><div class="text-small text-muted">已经踩下多少</div><div id="bd-displacement" class="bd-value">0.00 mm</div></div><div id="bd-speed-readout"><div id="bd-third-label" class="text-small text-muted">距离踩到底还需</div><div id="bd-current-speed" class="bd-value">5分00秒</div></div></div>
+<svg class="bd-figure" role="img" aria-label="20毫米每分钟加载速度示意。图形经过放大，不是任何车型的真实结构或力—位移曲线。"></svg>
+<div id="bd-road-area"><div class="bd-road" role="img" aria-label="车辆沿假设模型计算的距离前进"><div class="bd-road-line"></div><span id="bd-car" class="bd-car"><svg viewBox="0 0 96 44" width="80" height="40" aria-hidden="true"><path d="M8 29V20Q8 16 16 15L26 4H62L76 15H86Q91 15 91 21V31H8Z" fill="currentColor"/><path d="M30 8H58L68 16H23Z" fill="var(--color-paper)"/><circle cx="25" cy="32" r="9" fill="var(--color-ink)"/><circle cx="74" cy="32" r="9" fill="var(--color-ink)"/><circle cx="25" cy="32" r="4" fill="var(--color-paper)"/><circle cx="74" cy="32" r="4" fill="var(--color-paper)"/></svg></span><span class="bd-road-start text-small text-muted">开始踩下</span><span id="bd-road-end" class="bd-road-end text-small text-muted"></span></div><div id="bd-distance" class="text-small tabular-nums"></div></div>
+</div>
+<div class="bd-player">
+<div class="viz-controls bd-section"><button id="bd-play" type="button" class="btn btn-primary">开始播放</button><button id="bd-replay" type="button" class="btn">从头播放</button><span id="bd-status" class="text-small" role="status" aria-live="polite">准备播放</span><div id="bd-rate-field" class="bd-rate-picker"><span class="text-small">播放速度</span><div id="bd-rate-choices" class="bd-segments" role="group" aria-label="播放速度"><button type="button" data-choice="rate" data-value="1">1× 真实时间</button><button type="button" data-choice="rate" data-value="10">10×</button><button type="button" data-choice="rate" data-value="30">30×</button></div><select id="bd-rate" hidden aria-hidden="true"><option value="1">1</option><option value="10">10</option><option value="30">30</option></select></div></div>
+<div class="bd-section"><label class="form-label" for="bd-timeline">模拟时间 <span id="bd-duration" class="tabular-nums"></span></label><input id="bd-timeline" class="form-range" type="range" min="0" max="60" value="0" step="0.1"></div>
+<div id="bd-milestones" class="bd-milestones" aria-label="20毫米每分钟的时间刻度"><span><b>1分钟</b>20 mm</span><span><b>2分钟</b>40 mm</span><span><b>3分钟</b>60 mm</span><span><b>4分钟</b>80 mm</span><span><b>5分钟</b>100 mm</span></div>
+</div>
+<div id="bd-model-note" class="bd-section bd-assumption-note"></div>
+<div id="bd-table-wrap" class="bd-section"><h3>换一个初速，会走多远？</h3><p class="text-small">所选车 · 行程资料 + 线性减速度假设</p><div class="bd-table-scroll"><table class="table table-sm tabular-nums"><thead><tr><th>初速</th><th class="text-end">慢踩刹停时间</th><th class="text-end">慢踩刹停距离</th></tr></thead><tbody id="bd-results"></tbody></table></div><h3 class="bd-section">8款参考车，一起看</h3><p class="text-small">所选初速下的时间与距离 · 全行程未知车型使用100 mm假设</p><div class="bd-table-scroll"><table class="table table-sm tabular-nums"><thead><tr><th>车辆</th><th class="text-end">时间</th><th class="text-end">距离</th></tr></thead><tbody id="bd-car-comparison"></tbody></table></div><details><summary class="cursor-interaction">计算方法与局限</summary><p>沿用原来的模型：由100→0 km/h实测距离折算 a=(100/3.6)²/(2S)，空行程后减速度随踏板位移线性增加，升至a后保持。</p><p>资料车型使用所列全行程；全行程未知的6款车使用100 mm假设。空行程和减速度随位移线性增强的关系仍为假设；可切回原来的50 mm建立制动力模型。未计反应时间、坡度、空气阻力、滚阻、发动机制动及松油门再生制动。表中慢踩结果是演示估算，不是车型慢踩实测。</p></details></div>
+</section>
+</div>
+<section class="bd-library" aria-label="数据来源"><div class="bd-library-heading"><h2>数据从哪里来？</h2><span class="text-small">资料值与演示假设分别标注</span></div>
+<details class="bd-section"><summary class="cursor-interaction">踏板全行程数据与来源</summary><div class="bd-table-scroll"><table class="table table-sm bd-data"><thead><tr><th>资料车型</th><th>全行程</th><th>来源</th></tr></thead><tbody id="bd-stroke-sources"></tbody></table></div><p class="text-small">K5数值来自厂家网站；其他数值来自原厂维修资料的转载件，未对实车另行测量。这里使用“全行程”字段，不拿踏板高度、自由间隙或永久变形冒充全行程。</p></details>
+<details class="bd-section"><summary class="cursor-interaction">8 款车制动数据与原始来源</summary>
+<p class="text-small">6款车型为ADAC欧版测试；另加Rio YB与2013 Altima参照。Altima测试为70→0 mph，保留原始单位并在计算时换算，不冒称100→0数据。各车型版本分别列出。</p>
+<div class="bd-table-scroll"><table class="table table-sm bd-data tabular-nums"><thead><tr><th>测试车型 / 配置</th><th class="text-end">实测制动距离</th><th>原始来源</th></tr></thead><tbody id="bd-sources"></tbody></table></div>
+<div class="text-small">方法参考：ADAC 公布的常规测试说明采用额外载荷200 kg，对10次全力制动取均值。各报告未完整披露该次道路温度、踏板力—时间曲线等条件，未披露项不补填。</div>
+<div class="bd-links bd-section text-small"><a href="https://www.adac.de/rund-ums-fahrzeug/autokatalog/autotest/autotest-hintergrundstory/" target="_blank" rel="noopener noreferrer">ADAC 官方测试方法</a></div>
+<p class="text-small">Rio YB和2013 Altima同时列有全行程资料与制动实测参照。海豹、海豚、ET5、P7、卡罗拉及高尔夫尚无本页已核全行程，计算明确使用100 mm假设，不把别车行程写成它们的实测。</p>
+</details>
+</section>
+<footer class="bd-footer">20 mm/min = 0.333 mm/s · 资料核对日期：2026-10-13</footer>
+<script type="application/json" id="bd-data">
+{
+  "verifiedOn": "2026-10-13",
+  "models": [
+    {
+      "id": "rio",
+      "name": "起亚 Rio YB",
+      "version": "1.0 T-GDI 100 Spirit · 2020–2023欧版",
+      "distance": 35.5,
+      "date": "车型2020–2023",
+      "page": null,
+      "tire": "Continental ContiSportContact 5 · 205/45 R17 88Y",
+      "url": "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/kia/kia-rio/",
+      "stroke": 108,
+      "refSpeed": 100,
+      "publisher": "ADAC"
+    },
+    {
+      "id": "altima",
+      "name": "日产 Altima 2013",
+      "version": "2.5 SV · L33/CVT · 美版",
+      "distance": 56.083200000000005,
+      "nativeDistance": "184 ft",
+      "date": "2013款",
+      "page": null,
+      "tire": "来源未完整列轮胎配置",
+      "url": "https://www.caranddriver.com/reviews/comparison-test/a15118570/2013-ford-fusion-se-ecoboost-vs-2013-honda-accord-ex-2013-nissan-altima-25-sv-2012-volkswagen-passat-25-se-comparison-test/",
+      "stroke": 135.3,
+      "refSpeed": 112.65408000000001,
+      "publisher": "Car and Driver"
+    },
+    {
+      "id": "seal",
+      "name": "比亚迪海豹",
+      "version": "Seal Design · 后驱230 kW · 欧版",
+      "distance": 34.9,
+      "date": "2024-11",
+      "page": 12,
+      "tire": "Continental Eco Contact 6Q · 235/45 R19 99V XL",
+      "url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6432-byd-seal-design/byd-seal-design.pdf"
+    },
+    {
+      "id": "dolphin",
+      "name": "比亚迪海豚",
+      "version": "Dolphin Comfort · 150 kW · 欧版",
+      "distance": 38.3,
+      "date": "2024-10",
+      "page": 13,
+      "tire": "LingLong Comfort Master · 205/50 R17 93W",
+      "url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6431-byd-dolphin-comfort/byd-dolphin-comfort.pdf"
+    },
+    {
+      "id": "et5",
+      "name": "蔚来 ET5",
+      "version": "100 kWh · 360 kW · 欧版",
+      "distance": 35.5,
+      "date": "2023-09",
+      "page": 12,
+      "tire": "Michelin Primacy 4 · 245/45 R19 102V",
+      "url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/AT6332-nio-et5-100-kwh-inkl-batterie/nio-et5-100-kwh-inkl-batterie.pdf"
+    },
+    {
+      "id": "p7",
+      "name": "小鹏 P7",
+      "version": "Performance AWD · 348 kW · 欧版",
+      "distance": 35.1,
+      "date": "2025-01",
+      "page": 12,
+      "tire": "Michelin Pilot Sport 4 · 245/45 R19 102W",
+      "url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6434-xpeng-p7-performance-awd/xpeng-p7-performance-awd.pdf"
+    },
+    {
+      "id": "corolla",
+      "name": "卡罗拉旅行版",
+      "version": "Touring Sports 1.8 Hybrid Team Deutschland · 欧版",
+      "distance": 35.2,
+      "date": "2023-05",
+      "page": 10,
+      "tire": "Falken ZIEX ZE914B · 225/40 R18 92W",
+      "url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6301-toyota-corolla-touring-sports-18-hybrid-team-deutschland/toyota-corolla-touring-sports-18-hybrid-team-deutschland.pdf"
+    },
+    {
+      "id": "golf",
+      "name": "高尔夫",
+      "version": "1.5 TSI Life · 85 kW · 欧版",
+      "distance": 36.7,
+      "date": "2024-12",
+      "page": 13,
+      "tire": "Michelin Cross Climate · 205/55 R16 94V",
+      "url": "https://assets.adac.de/image/upload/Autodatenbank/Autotest/at6463-vw-golf-15-tsi-life/vw-golf-15-tsi-life.pdf"
+    }
+  ],
+  "report": {
+    "source": "用户提供的尊界V800检测说明图片；未独立核验完整报告",
+    "date": "2026-10-11",
+    "permanentDeformations": [
+      2.04,
+      4.07,
+      2.05,
+      2.28
+    ],
+    "loads": [
+      [
+        "01005",
+        2000
+      ],
+      [
+        "01006",
+        2000
+      ],
+      [
+        "01007",
+        2000
+      ],
+      [
+        "01008",
+        2200
+      ],
+      [
+        "01009",
+        2200
+      ],
+      [
+        "01010",
+        2200
+      ],
+      [
+        "01011",
+        2250
+      ],
+      [
+        "01012",
+        2300
+      ],
+      [
+        "01013",
+        2350
+      ],
+      [
+        "01014",
+        2400
+      ],
+      [
+        "01015",
+        2450
+      ],
+      [
+        "01016",
+        2500
+      ],
+      [
+        "01017",
+        3000
+      ],
+      [
+        "01018",
+        3000
+      ]
+    ]
+  },
+  "strokeProfiles": [
+    {
+      "stroke": 108,
+      "name": "起亚 Rio YB",
+      "grade": "原厂维修资料转载",
+      "url": "https://www.krioyb.com/kia_rio_brake_system-574.html"
+    },
+    {
+      "stroke": 130.4,
+      "name": "起亚 K5 · DL3C/2021手册",
+      "grade": "厂家网站",
+      "url": "https://ownersmanual.kia.com/full_webhelp/DL3C/2021/en_GB/topics/chapter8_8.html"
+    },
+    {
+      "stroke": 135.3,
+      "name": "日产 Altima 2013 · L33/CVT",
+      "grade": "原厂维修资料转载 · SM3E-1L33U1",
+      "url": "https://manuals.plus/m/d1ec06109a5ad80c1715ab00139206126471574a6cc629454106d127804ebe5c"
+    },
+    {
+      "stroke": 136,
+      "name": "起亚 Niro 2017 · DE HEV",
+      "grade": "原厂维修资料转载",
+      "url": "https://www.kniro.net/specifications-1375.html"
+    }
+  ]
+}
+</script>
+</div>
+<script>
+(() => {
+const root=document.getElementById('brake-demo-2010'),el=id=>root.querySelector('#'+id),data=JSON.parse(el('bd-data').textContent),models=Object.fromEntries(data.models.map(m=>[m.id,m]));
+const svg=root.querySelector('.bd-figure'),forceSvg=root.querySelector('.bd-force-svg'),rate=20/60;
+let mode='pedal',model='rio',speed=100,free=5,ramp='full',stroke=108,multiplier=1,t=0,playing=false,last=0,geometry=null;
+function restore(s){const a=s?.modelContent;if(!a||a.version!==4)return;mode=['report','pedal','force','brake'].includes(a.mode)?a.mode:'pedal';model=models[a.model]?a.model:'rio';speed=[30,50,80,100,120].includes(a.speed)?a.speed:100;free=[0,3,5,8].includes(a.free)?a.free:5;ramp=[10,30,50,'full'].includes(a.ramp)?a.ramp:'full';stroke=[100,108,130.4,135.3,136].includes(a.stroke)?a.stroke:108;multiplier=[1,10,30].includes(a.multiplier)?a.multiplier:1;t=0;playing=false;}
+restore(window.openai?.widgetState);
+const settings=()=>({version:4,mode,model,speed,free,ramp,stroke,multiplier});
+function persist(){window.openai?.setWidgetState?.({modelContent:{...settings(),meaning:'整车慢踩是未校准的条件模型；3000N比较不等于断裂预测'},privateContent:null}).catch(()=>{});}
+function parameters(m=model,k=speed){const a=((models[m].refSpeed||100)/3.6)**2/(2*models[m].distance),v=k/3.6,delay=free/rate,full=models[m].stroke||100,build=(ramp==='full'?full-free:ramp)/rate,jerk=a/build,u=Math.sqrt(2*v/jerk),after=u<=build?u:build+(v-a*build/2)/a;return {a,v,delay,build,jerk,after,stop:delay+after,fast:v/a};}
+function stateAt(time,p){if(time<=p.delay)return {v:p.v,d:p.v*time};const u=Math.min(time-p.delay,p.after);if(u<=p.build)return {v:Math.max(0,p.v-p.jerk*u*u/2),d:p.v*p.delay+p.v*u-p.jerk*u**3/6};const w=u-p.build,vb=p.v-p.a*p.build/2;return {v:Math.max(0,vb-p.a*w),d:p.v*p.delay+p.v*p.build-p.jerk*p.build**3/6+vb*w-p.a*w*w/2};}
+function clockText(seconds){const n=Math.max(0,Math.round(seconds));return Math.floor(n/60)+'分'+String(n%60).padStart(2,'0')+'秒';}
+const duration=()=>mode==='pedal'?stroke/rate:parameters().stop;
+function makeSvg(){if(!['pedal','brake'].includes(mode))return;const w=Math.max(260,Math.round(svg.getBoundingClientRect().width)),h=330,left=24,right=w-24,y=276,max=mode==='pedal'?stroke:Math.ceil((rate*duration()+2)/5)*5,scale=x=>left+x/max*(right-left),step=max>30?(w<400?Math.ceil(max/3/10)*10:20):5,ticks=[];for(let x=0;x<max;x+=step)if(max-x>=step*.75)ticks.push(x);ticks.push(max);const cx=w*.32,cy=38,len=166;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.innerHTML=`<title>20毫米每分钟的移动示意</title><desc>位移标尺按数值展示；踏板转角放大，仅为动作示意。</desc><text class="bd-diagram-caption" x="${right}" y="20" text-anchor="end">动作示意 · 转角放大</text><path d="M ${cx-42} 18 V ${cy} H ${cx+42} V 18" fill="none" stroke="var(--border)" stroke-width="8"/><circle cx="${cx}" cy="${cy}" r="9" fill="var(--foreground)"/><circle cx="${cx}" cy="${cy}" r="3" fill="var(--background)"/><text x="${cx-18}" y="${cy+30}" text-anchor="end">支点</text><path d="M ${cx} ${cy} V ${cy+len}" stroke="var(--border)" stroke-width="12" stroke-dasharray="4 5" fill="none"/><g id="bd-pedal"><path d="M ${cx} ${cy} L ${cx} ${cy+len}" stroke="var(--viz-series-1)" stroke-width="12" stroke-linecap="round" fill="none"/><rect x="${cx-36}" y="${cy+len-19}" width="72" height="38" rx="8" fill="var(--viz-series-1)"/>${[-9,0,9].map(d=>`<path d="M ${cx-23} ${cy+len+d} H ${cx+23}" stroke="var(--background)" stroke-width="2"/>`).join('')}</g><text x="${w*.62}" y="126">缓慢踩下</text><text class="bd-diagram-caption" x="${w*.62}" y="148">0.333 mm/s</text><path d="M ${w*.62} 170 h 50 l -8 -5 m 8 5 l -8 5" fill="none" stroke="var(--muted-foreground)" stroke-width="2"/><text class="bd-diagram-caption" x="${left}" y="${y-24}">踏板位移</text><rect x="${left}" y="${y-4}" width="${right-left}" height="8" rx="4" fill="var(--muted)"/><rect id="bd-ruler-fill" x="${left}" y="${y-4}" width="0" height="8" rx="4" fill="var(--viz-series-1)"/>${ticks.map(x=>`<line x1="${scale(x)}" x2="${scale(x)}" y1="${y+7}" y2="${y+15}" stroke="var(--border)"/><text x="${scale(x)}" y="${y+35}" text-anchor="${x===0?'start':x===max?'end':'middle'}">${x}${x===max?' mm':''}</text>`).join('')}<circle id="bd-ruler-dot" cx="${left}" cy="${y}" r="7" fill="var(--viz-series-1)"/>`;geometry={cx,cy,max,left,scale};update();}
+function makeForce(){if(mode!=='force')return;const w=Math.max(280,Math.round(forceSvg.getBoundingClientRect().width)),l=62,r=w-20,span=r-l;forceSvg.setAttribute('viewBox',`0 0 ${w} 300`);let markup='<title>同为3000牛的两种加载形状</title><desc>外力峰值相同。横轴未定标，曲线只是形状示意，不是本车试验数据，不表达真实时间比。</desc>';for(const [i,name]of ['慢加载 · 保持后卸载','猛踩 · 短时峰值示意'].entries()){const top=28+i*140,base=top+100,peak=top+35;markup+=`<text x="${l}" y="${top}">${name}</text><text x="${l-8}" y="${peak+4}" text-anchor="end">3000 N</text><text x="${l-8}" y="${base+4}" text-anchor="end">0</text><line x1="${l}" x2="${r}" y1="${base}" y2="${base}" stroke="var(--border)"/><line x1="${l}" x2="${r}" y1="${peak}" y2="${peak}" stroke="var(--border)"/>`;const points=i===0?[[0,0],[.12,0],[.65,1],[.88,1],[.96,0],[1,0]]:[[0,0],[.12,0],[.18,.3],[.23,1],[.29,.2],[.34,0],[1,0]];markup+=`<path d="${points.map((p,j)=>`${j?'L':'M'} ${l+p[0]*span} ${base-p[1]*(base-peak)}`).join(' ')}" stroke="var(--viz-series-${i+1})" stroke-width="2" fill="none"/>`;}
+markup+=`<text x="${w/2}" y="294" text-anchor="middle">过程形状示意 · 时间轴未定标</text>`;forceSvg.innerHTML=markup;}
+function rawLabel(m){return m.nativeDistance?`70→0 mph：${m.nativeDistance}（${m.distance.toFixed(2)} m）`:`100→0 km/h：${m.distance.toFixed(1)} m`;}
+function sourceHtml(m){const p=data.strokeProfiles.find(p=>p.stroke===m.stroke),label=m.page?`${m.publisher||'ADAC'} 原始报告 · 第${m.page}页`:`${m.publisher||'ADAC'} 原始测试页`;return `<a href="${m.url}${m.page?'#page='+m.page:''}" target="_blank" rel="noopener noreferrer">${label}</a> · ${m.date} · ${rawLabel(m)}<br>${m.version}；${m.tire}<br>${p?`全行程：${m.stroke} mm · <a href="${p.url}" target="_blank" rel="noopener noreferrer">${p.grade}</a>`:'尚未核得该车全行程，本模型暂用100 mm假设'}`;}
+el('bd-model').innerHTML=data.models.map(m=>`<option value="${m.id}">${m.name}${m.stroke?' · 行程'+m.stroke+' mm':' · 行程待核'}</option>`).join('');
+el('bd-sources').innerHTML=data.models.map(m=>`<tr><td>${m.name}<div class="text-small">${m.version}</div><details><summary class="cursor-interaction text-small">轮胎配置</summary><div class="text-small">${m.tire}</div></details></td><td class="text-end">${m.distance.toFixed(1)} m<div class="text-small">${m.nativeDistance?'70→0 mph · 184 ft':'100→0 km/h'}</div></td><td><a href="${m.url}${m.page?'#page='+m.page:''}" target="_blank" rel="noopener noreferrer">${m.page?'PDF第'+m.page+'页':m.publisher+'测试页'}</a><div class="text-small">${m.date}</div></td></tr>`).join('');
+el('bd-stroke-sources').innerHTML=data.strokeProfiles.map(p=>`<tr><td>${p.name}</td><td>${p.stroke} mm<br>${clockText(p.stroke/rate)}</td><td><a href="${p.url}" target="_blank" rel="noopener noreferrer">${p.grade}</a></td></tr>`).join('');
+const groups=new Map();for(const [id,load]of data.report.loads){if(!groups.has(load))groups.set(load,[]);groups.get(load).push(id);}el('bd-report-loads').innerHTML=[...groups].map(([load,ids])=>`<tr><td>${load} N</td><td>${ids.length}</td><td>${ids.join('、')}</td></tr>`).join('');
+function syncChoices(){root.querySelectorAll('[data-choice]').forEach(b=>{const selected=el('bd-'+b.dataset.choice).value===b.dataset.value;if(b.dataset.choice==='mode'){b.setAttribute('aria-selected',String(selected));b.tabIndex=selected?0:-1;}else b.setAttribute('aria-pressed',String(selected));});}
+function setControls(){el('bd-mode').value=mode;el('bd-rate').value=String(multiplier);el('bd-model').value=model;el('bd-speed').value=String(speed);el('bd-free').value=String(free);el('bd-ramp').value=String(ramp);el('bd-stroke').value=String(stroke);const motion=['pedal','brake'].includes(mode),brake=mode==='brake';el('bd-stage-kicker').textContent=brake?'20 mm/min · 刹停条件估算':'20 mm/min · 行程演示';el('bd-total').innerHTML=brake?'<span>模型刹停距离</span><strong>'+Math.round(stateAt(parameters().stop,parameters()).d).toLocaleString('zh-CN')+'<small> m</small></strong>':'<span>从开始到踩到底</span><strong>'+clockText(stroke/rate)+'</strong>';el('bd-heading').textContent=mode==='pedal'?stroke+' mm'+(stroke===100?'假设':'资料')+'行程 → '+clockText(stroke/rate)+'才踩到底':brake?'20 mm/min慢踩：多久、多远才停':'踏板测试的动作与加载方式';const sp=data.strokeProfiles.find(p=>p.stroke===stroke);el('bd-stroke-source').innerHTML=sp?sp.name+' · '+sp.stroke+' mm · <a href="'+sp.url+'" target="_blank" rel="noopener noreferrer">'+sp.grade+'</a>':'100 mm为演示假设';el('bd-report').hidden=mode!=='report';el('bd-force').hidden=mode!=='force';el('bd-motion').hidden=!motion;el('bd-rate-field').hidden=!motion;el('bd-stroke-field').hidden=brake;el('bd-stroke-source').hidden=brake;el('bd-milestones').hidden=brake;for(const id of ['bd-brake-controls','bd-selected-source','bd-road-area','bd-table-wrap'])el(id).hidden=!brake;if(motion){el('bd-timeline').max=String(Math.ceil(duration()*10)/10);el('bd-duration').textContent=mode==='pedal'?'0–'+clockText(duration()):`0–${duration().toFixed(1)} s`;el('bd-selected-source').innerHTML=sourceHtml(models[model]);el('bd-model-note').textContent=brake?`计算：全行程${models[model].stroke||100} mm${models[model].stroke?'（资料值）':'（暂用假设）'}；前${free} mm不制动，其后${ramp==='full'?(models[model].stroke||100)-free:ramp} mm内减速度线性增强。空行程与这条增强规律仍是演示假设。`:`总行程${stroke} mm，按20 mm/min踩到底需${clockText(stroke/rate)}。1分钟只踩下20 mm；资料全行程并不等于刹停必须踩下的距离。`;el('bd-results').innerHTML=[30,50,80,100,120].map(k=>`<tr aria-current="${k===speed}"><td>${k} km/h</td><td class="text-end">${parameters(model,k).stop.toFixed(1)} s</td><td class="text-end">${Math.round(stateAt(parameters(model,k).stop,parameters(model,k)).d)} m</td></tr>`).join('');el('bd-car-comparison').innerHTML=data.models.map(m=>{const p=parameters(m.id),d=stateAt(p.stop,p).d;return `<tr aria-current="${m.id===model}"><td>${m.name}</td><td class="text-end">${p.stop.toFixed(1)} s</td><td class="text-end">${Math.round(d)} m</td></tr>`;}).join('');makeSvg();}makeForce();syncChoices();el('bd-motion').setAttribute('aria-labelledby','bd-tab-'+mode);}
+function update(){if(!['pedal','brake'].includes(mode))return;const end=duration();t=Math.max(0,Math.min(t,end));const x=rate*t;el('bd-time').textContent=mode==='pedal'?clockText(t):t.toFixed(1)+' s';el('bd-displacement').textContent=x.toFixed(2)+' mm';el('bd-timeline').value=String(t);el('bd-timeline').setAttribute('aria-valuetext',clockText(t)+'，已踩下'+x.toFixed(2)+'毫米');el('bd-play').textContent=playing?'暂停':t>=end?'重新播放':t===0?'开始播放':'继续播放';if(geometry){const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;svg.classList.toggle('bd-reduced-motion',reduce);el('bd-pedal').setAttribute('transform',`rotate(${-35*x/geometry.max} ${geometry.cx} ${geometry.cy})`);el('bd-ruler-dot').setAttribute('cx',geometry.scale(x));el('bd-ruler-fill').setAttribute('width',geometry.scale(x)-geometry.left);}if(mode==='pedal'){el('bd-third-label').textContent='距离踩到底还需';el('bd-current-speed').textContent=clockText(end-t);}if(mode==='brake'){el('bd-third-label').textContent='模型当前车速';const p=parameters(),now=stateAt(t,p),stop=stateAt(p.stop,p);el('bd-current-speed').textContent=(now.v*3.6).toFixed(1)+' km/h';el('bd-car').style.transform='translateX('+((el('bd-road-area').querySelector('.bd-road').getBoundingClientRect().width-80)*now.d/stop.d)+'px)';el('bd-road-end').textContent='假设模型终点 '+Math.round(stop.d)+' m';el('bd-distance').textContent=`模型已前进 ${Math.round(now.d)} m · 慢踩条件估算 ${p.stop.toFixed(1)} s · 等效恒定减速度估算 ${p.fast.toFixed(1)} s`;}}
+function announce(){el('bd-status').textContent=t>=duration()?(mode==='pedal'?'已踩到底':'假设模型车辆停下'):playing?`${multiplier} 倍速播放`:'已暂停';}
+function reset(play=false){t=0;playing=play;last=0;setControls();announce();}
+for(const id of ['mode','model','speed','free','ramp','stroke'])el('bd-'+id).addEventListener('change',e=>{const v=e.target.value;if(id==='mode')mode=v;if(id==='model'){model=v;stroke=models[v].stroke||100;}if(id==='speed')speed=+v;if(id==='free')free=+v;if(id==='ramp')ramp=v==='full'?'full':+v;if(id==='stroke')stroke=+v;reset(false);persist();});
+el('bd-rate').addEventListener('change',e=>{multiplier=+e.target.value;last=0;syncChoices();announce();persist();});el('bd-play').addEventListener('click',()=>{if(t>=duration())t=0;playing=!playing;last=0;update();announce();persist();});el('bd-replay').addEventListener('click',()=>{reset(true);persist();});el('bd-timeline').addEventListener('input',e=>{t=+e.target.value;playing=false;update();announce();});el('bd-timeline').addEventListener('change',persist);
+for(const key of ['stroke','model','speed']){const select=el('bd-'+key);el('bd-'+key+'-choices').innerHTML=Array.from(select.options).map(option=>{const m=key==='model'?models[option.value]:null,p=key==='stroke'?data.strokeProfiles.find(p=>String(p.stroke)===option.value):null;const name=m?m.name:key==='stroke'?({'108':'起亚 Rio YB','130.4':'起亚 K5','135.3':'日产 Altima','136':'起亚 Niro','100':'100 mm 假设'}[option.value]):option.textContent;const grade=m?(m.stroke?'全行程有资料':'全行程100 mm假设'):p?`${p.stroke} mm · ${p.grade.startsWith('原厂')?'维修资料':'厂家网站'}`:key==='stroke'?'5分钟踩到底':'';return `<button type="button" class="bd-choice" data-choice="${key}" data-value="${option.value}" aria-pressed="false"><span>${name}</span>${grade?`<small>${grade}</small>`:''}</button>`;}).join('');}
+root.querySelectorAll('[data-choice]').forEach(button=>button.addEventListener('click',()=>{const select=el('bd-'+button.dataset.choice);if(select.value===button.dataset.value)return;select.value=button.dataset.value;select.dispatchEvent(new Event('change',{bubbles:true}));}));
+const tabs=Array.from(root.querySelectorAll('[role="tab"]'));for(const tab of tabs)tab.addEventListener('keydown',event=>{let index=tabs.indexOf(tab);if(event.key==='ArrowRight')index=(index+1)%tabs.length;else if(event.key==='ArrowLeft')index=(index+tabs.length-1)%tabs.length;else if(event.key==='Home')index=0;else if(event.key==='End')index=tabs.length-1;else return;event.preventDefault();tabs[index].focus();tabs[index].click();});
+window.addEventListener('openai:set_globals',e=>{const s=e.detail?.globals?.widgetState,a=s?.modelContent;if(!a||a.version!==4)return;if(Object.entries(settings()).every(([k,v])=>a[k]===v))return;restore(s);setControls();announce();});document.addEventListener('visibilitychange',()=>{last=0;});new ResizeObserver(makeSvg).observe(svg);new ResizeObserver(makeForce).observe(forceSvg);
+function frame(stamp){if(playing&&!document.hidden&&['pedal','brake'].includes(mode)){if(last)t+=(stamp-last)/1000*multiplier;if(t>=duration()){t=duration();playing=false;announce();}update();}last=stamp;requestAnimationFrame(frame);}setControls();requestAnimationFrame(frame);
+})();
+</script>
+
+</body></html>
